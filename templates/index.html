@@ -1,11 +1,68 @@
+<!-- 김무성 -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    {% include 'layout/header.html' %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='main/main.css') }}"
+    />
+    <script
+      defer
+      src="{{ url_for('static', filename='main/main.js') }}"
+    ></script>
+    <title>DevMinds</title>
   </head>
   <body>
-    Heloo World!
+    <div class="home-layout">
+      <div class="layout">
+        <!-- 헤더 -->
+        <header>
+          <div class="header">
+            <div>DevMinds</div>
+            <div>
+              <ul class="list">
+                <li>알림</li>
+                <li>검색</li>
+                <li>
+                  <button class="login-button">로그인</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <!-- 정렬버튼바 -->
+        <nav class="sort-bar">
+          <ul class="sort">
+            <div>
+              <li id="like" class="sort-active">
+                <i class="bi bi-heart me-2"></i>
+                <span>트렌딩</span>
+              </li>
+              <li id="recent">
+                <i class="bi bi-clock me-2"></i> <span>최신</span>
+              </li>
+              <li>피드</li>
+              <div class="sort-bar-underline"></div>
+            </div>
+          </ul>
+
+          <div>이번주</div>
+        </nav>
+
+        <!-- 메인 -->
+        <main>
+          <ul id="card-list" class="card-list">
+            <!-- 카드 자동 생성 -->
+          </ul>
+          <ul id="loading-dummy" class="card-list"></ul>
+        </main>
+      </div>
+    </div>
+
+    {% include 'layout/footer.html' %}
   </body>
 </html>

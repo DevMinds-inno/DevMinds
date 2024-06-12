@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    {% include 'layout/header.html' %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='write/write.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container-fluid row">
+      <!-- left -->
+      <div class="col-6 h-100">
+        <form id="write-form" class="d-flex flex-column h-100">
+          <!-- title, writer, content -->
+          <div class="d-flex flex-column h-100 ps-3 pt-3 gap-3">
+            <!-- title -->
+            <div class="form-floating">
+              <input
+                type="text"
+                id="title"
+                name="title"
+                class="form-control border-0"
+                maxlength="100"
+                required
+                placeholder="제목을 입력해주세요."
+              />
+              <label for="title">제목</label>
+            </div>
+
+            <!-- writer -->
+            <div class="form-floating">
+              <input
+                type="text"
+                id="writer"
+                name="writer"
+                class="form-control border-0"
+                maxlength="100"
+                required
+                placeholder="작성자 명을 입력해주세요."
+              />
+              <label for="writer">작성자</label>
+            </div>
+
+            <!-- password -->
+            <div class="form-floating">
+              <input
+                type="password"
+                name="password"
+                class="form-control border-0"
+                required
+                placeholder="게시글 비밀번호를 입력해주세요."
+              />
+              <label for="password">게시글 비밀번호</label>
+            </div>
+
+            <!-- content -->
+            <div class="form-floating overflow-auto flex-grow-1 mb-1">
+              <textarea
+                id="content"
+                name="content"
+                class="form-control border-0 h-100"
+                maxlength="10000"
+                required
+                placeholder="내용을 입력해주세요."
+              ></textarea>
+              <label for="content">내용</label>
+            </div>
+          </div>
+
+          <!-- button -->
+          <div class="d-flex justify-content-between p-3 top-shadow">
+            <button type="button" class="btn" id="back-btn">
+              <i class="bi bi-arrow-left"></i> 나가기
+            </button>
+
+            <button class="btn btn-primary" id="submit">작성하기</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- right -->
+      <div class="col-6 div--result--scroll">
+        <h1 id="result-title"></h1>
+        <div id="result-content"></div>
+      </div>
+    </div>
+    {% include 'layout/footer.html' %}
+    <script src="{{ url_for('static', filename='write/write.js') }}"></script>
+  </body>
+</html>
