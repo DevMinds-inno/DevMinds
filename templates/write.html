@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    {% include 'layout/header.html' %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='write/write.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container-fluid row">
+      <!-- left -->
+      <div class="col-6 h-100">
+        <form
+          action="{{ url_for('write') }}"
+          method="POST"
+          class="d-flex flex-column h-100"
+        >
+          <!-- title, content -->
+          <div class="d-flex flex-column h-100 ps-3 pt-3">
+            <input
+              type="text"
+              class="title--input--big border-0"
+              maxlength="100"
+              placeholder="제목을 입력해주세요."
+              id="title"
+              name="title"
+            />
+
+            <textarea
+              class="overflow-auto flex-grow-1 border-0"
+              maxlength="10000"
+              placeholder="내용을 입력해주세요."
+              id="content"
+              name="content"
+            ></textarea>
+          </div>
+
+          <!-- button -->
+          <div class="d-flex justify-content-between p-3 top-shadow">
+            <button type="button" class="btn" id="back">
+              <i class="bi bi-arrow-left"></i> 나가기
+            </button>
+            <button class="btn btn-primary" id="submit">작성하기</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- right -->
+      <div class="col-6 div--result--scroll">
+        <h1 id="result-title"></h1>
+        <div id="result-content"></div>
+      </div>
+    </div>
+    {% include 'layout/footer.html' %}
+    <script src="{{ url_for('static', filename='write/write.js') }}"></script>
+  </body>
+</html>

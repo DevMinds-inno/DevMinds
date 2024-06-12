@@ -1,0 +1,41 @@
+/* body {
+  background-color: black;
+  color: white;
+} */
+/* 
+.h-screen {
+  height: 100vh;
+} */
+
+.container-fluid {
+  height: 100vh;
+}
+.h-90vh {
+  height: 90vh;
+}
+
+/* input,textarea */
+textarea {
+  resize: none;
+}
+
+.title--input--big {
+  font-size: 2.75rem;
+}
+
+input:focus,
+textarea:focus {
+  border: none;
+  outline: none;
+}
+/* input,textarea */
+
+.top-shadow {
+  box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.div--result--scroll {
+  white-space: pre-wrap;
+  overflow: auto;
+  height: 100vh;
+}

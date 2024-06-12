@@ -4,6 +4,7 @@ import os
 # src/*
 from src.model import db, Board
 from src.main import home
+from src.write import write
 # src/*
 
 
@@ -33,6 +34,10 @@ with app.app_context():
 
 # main.py
 app.route("/")(home)
+
+
+# write.py
+app.route("/write")(write)
 
 
 
