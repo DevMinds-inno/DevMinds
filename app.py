@@ -4,7 +4,7 @@ import os
 # src/*
 from src.model import db, Board
 from src.main import home
-from src.write import write, write_id, write_post
+from src.write import write, write_post
 # src/*
 
 
@@ -39,7 +39,7 @@ app.route("/")(home)
 
 # write.py
 app.route("/boards/write", methods=["GET"])(write)
-app.route("/boards/write/<id>", methods=["GET"])(write_id)
+# app.route("/boards/write/<id>", methods=["GET"])(write_id)
 app.route("/api/boards", methods=["POST"])(write_post)
 
 
