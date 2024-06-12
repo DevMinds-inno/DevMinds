@@ -19,9 +19,13 @@ textarea {
   resize: none;
 }
 
-.title--input--big {
-  font-size: 2.75rem;
+/* .title--input-div--big {
+  height: fit-content;
 }
+
+.title--input--big {
+  font-size: 2rem;
+} */
 
 input:focus,
 textarea:focus {
