@@ -3,7 +3,7 @@ import os
 
 # src/*
 from src.model import db, Board
-from src.main import home
+from src.main import home,get_post
 # src/*
 
 
@@ -33,6 +33,7 @@ with app.app_context():
 
 # main.py
 app.route("/")(home)
+app.route('/posts')(get_post)
 
 
 
