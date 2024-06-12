@@ -12,13 +12,15 @@ def get_post():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     # desc(Board.likesCount)
-    type = Board.title if sortType == 'like' else desc(Board.created_dttm)
+    # desc(Board.id)
+    type = (Board.id) if sortType == 'like' else (desc(Board.id))
 
     posts = Board.query.order_by(type).paginate(page=page, per_page=per_page, error_out=False)
  
     posts_list = []
     for post in posts.items:
         post_data = {
+            "id":post.id,
             'title': post.title,
             'content': post.content,
             'writer': post.writer,

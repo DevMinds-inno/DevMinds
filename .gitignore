@@ -2,3 +2,6 @@ __pycache__
 .venv
 
 src/__pycache__/*
+
+database.db
+src/__pycache__/model.cpython-38.pyc
