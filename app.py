@@ -2,7 +2,7 @@ from flask import Flask
 import os
 
 # src/*
-from src.model import db
+from src.model import db, Board
 from src.main import home
 # src/*
 
@@ -16,7 +16,20 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(baseDir, 'da
 db.init_app(app)
 with app.app_context():
     db.create_all()
+
+    # 초기 데이터 생성
+    initial_data = [
+        Board(title='Title 1', content='Content 1', password='password1', writer='Writer 1'),
+        Board(title='Title 2', content='Content 2', password='password2', writer='Writer 2'),
+        # 추가적인 데이터를 여기에 넣을 수 있습니다.
+    ]
+
+    # 데이터베이스에 데이터 추가
+    db.session.bulk_save_objects(initial_data)
+    db.session.commit()
 ### 데이터베이스 설정 ###
+
+
 
 # main.py
 app.route("/")(home)
