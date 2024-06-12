@@ -38,7 +38,7 @@ class Write {
     });
 
     // POST 요청을 보냅니다.
-    const res = await fetch("/write_post", {
+    const res = await fetch("/boards", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ class Write {
     const resJson = await res.json();
     resJson.message && alert(resJson.message);
     resJson.post_id
-      ? (location.href = `/post/${resJson.post_id}`)
+      ? (location.href = `/boards/${resJson.post_id}`)
       : (location.href = "/");
   }
 }

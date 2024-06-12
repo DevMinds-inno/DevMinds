@@ -38,8 +38,8 @@ app.route("/")(home)
 
 
 # write.py
-app.route("/write")(write)
-app.route("/write_post", methods=["POST"])(write_post)
+app.route("/write", methods=["GET"])(write)
+app.route("/boards", methods=["POST"])(write_post)
 
 
 
