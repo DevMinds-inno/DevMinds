@@ -7,7 +7,7 @@ const selectButton = document.querySelector(".home-tag-right-selecter");
 const selectValue = document.querySelector(".home-tag-right-value");
 const selectBar = document.querySelector(".home-tag-right-selecter-bar");
 const selectBarList = document.querySelector(".home-tag-right-list");
-const PER_PAGE = 20; // 한번에 가져올 페이지개수
+const PER_PAGE = 8; // 한번에 가져올 페이지개수
 
 // 변수공간
 let sortType = "";
@@ -55,11 +55,17 @@ const createBoardList = (data) => {
     const postElement = document.createElement("li");
     postElement.classList.add("card");
     postElement.innerHTML = `
-        <a href="/boards/${board.id}">
-          <div class="card-image-box">
-            <img class="card-image" src="" alt="" />
-          </div>
-        </a>
+        ${
+          board.img_src
+            ? `
+          <a href="/boards/${board.id}">
+            <div class="card-image-box">
+              <img class="card-image" src="${board.img_src}" alt="${board.title}_image" />
+            </div>
+          </a>`
+            : ""
+        }
+     
         <div class="card-main">
           <a href="/boards/${board.id}">
             <h4 class="card-main-title">${board.title}</h4>
@@ -108,8 +114,8 @@ const loadboards = async () => {
 
   try {
     const response = await fetch(
-      `/api/boards/${sortType ?? "recent"}/${
-        sortDate ?? "week"
+      `/api/boards/${sortType || "recent"}/${
+        sortDate || "week"
       }?&page=${page}&per_page=${PER_PAGE}`
     );
 

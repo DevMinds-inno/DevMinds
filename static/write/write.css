@@ -43,3 +43,8 @@ textarea:focus {
   overflow: auto;
   height: 100vh;
 }
+
+input[readonly],
+textarea[readonly] {
+  cursor: default;
+}

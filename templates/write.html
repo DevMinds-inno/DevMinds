@@ -16,8 +16,20 @@
       <!-- left -->
       <div class="col-6 h-100">
         <form id="write-form" class="d-flex flex-column h-100">
-          <!-- title, writer, content -->
           <div class="d-flex flex-column h-100 ps-3 pt-3 gap-3">
+            <!-- img_src -->
+            <div class="form-floating">
+              <input
+                type="text"
+                id="img_src"
+                name="img_src"
+                class="form-control border-0"
+                value="https://via.placeholder.com/300x200.png"
+                maxlength="1000"
+                placeholder="대표 이미지 URL을 입력해주세요."
+              />
+              <label for="img_src">대표 이미지 URL</label>
+            </div>
             <!-- title -->
             <div class="form-floating">
               <input
@@ -50,6 +62,7 @@
             <div class="form-floating">
               <input
                 type="password"
+                id="password"
                 name="password"
                 class="form-control border-0"
                 required
@@ -85,11 +98,34 @@
 
       <!-- right -->
       <div class="col-6 div--result--scroll">
+        <img
+          id="result-image"
+          class="img-thumbnail h-25"
+          src=""
+          alt="대표 이미지 미리보기"
+        />
         <h1 id="result-title"></h1>
         <div id="result-content"></div>
       </div>
     </div>
+
     {% include 'layout/footer.html' %}
+
+    <script>
+      let data = null;
+
+      if ("{{post}}" !== "None") {
+        data = {
+          id: "{{ post.id }}" ?? "",
+          title: "{{ post.title }}" ?? "",
+          writer: "{{ post.writer }}" ?? "",
+          password: "{{ post.password }}" ?? "",
+          content: `{{ post.content }}` ?? "",
+          img_src: "{{ post.img_src }}" ?? "",
+        };
+      }
+    </script>
+
     <script src="{{ url_for('static', filename='write/write.js') }}"></script>
   </body>
 </html>

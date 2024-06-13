@@ -46,6 +46,7 @@ def get_Boards(sortType = 'recent', sortDate = 'week'):
             'title': post.title,
             'content': post.content,
             'writer': post.writer,
+            'img_src': post.img_src,
             'created_dttm': post.created_dttm.strftime('%Y-%m-%d'), 
             'updated_dttm': changeDate(post.updated_dttm.strftime('%Y-%m-%d') )  
         }

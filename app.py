@@ -4,12 +4,16 @@ import os
 # src/*
 from src.model import db, Board
 from src.main import home,get_Boards
-from src.write import write, write_post
+# from src.write import form, write_post, form_id, modify_post
+from src import write
+from src.detail import detail_board, check_board_password, format_datetime
 # src/*
 
 
 baseDir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'your_secret_key'
 
 ### 데이터베이스 설정 ###
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(baseDir, 'database.db')
@@ -17,8 +21,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(baseDir, 'da
 db.init_app(app)
 with app.app_context():
     db.create_all()
-
-    # 데이터베이스에 데이터가 없는 경우에만 초기 데이터 생성
+### 데이터베이스 설정 ###
+# 데이터베이스에 데이터가 없는 경우에만 초기 데이터 생성
     if Board.query.count() == 0:
         initial_data = [
             Board(title='Title 1', content='Content 1', password='password1', writer='Writer 1'),
@@ -29,8 +33,6 @@ with app.app_context():
         # 데이터베이스에 데이터 추가
         db.session.bulk_save_objects(initial_data)
         db.session.commit()
-### 데이터베이스 설정 ###
-
 
 
 # main.py
@@ -42,10 +44,18 @@ app.route('/api/boards/<sortType>/<sortDate>')(get_Boards)
 
 
 # write.py
-app.route("/boards/write", methods=["GET"])(write)
-# app.route("/boards/write/<id>", methods=["GET"])(write_id)
-app.route("/api/boards", methods=["POST"])(write_post)
+app.route("/boards/form", methods=["GET"])(write.form)
+app.route("/boards/form/<id>", methods=["GET"])(write.form_id)
+app.route("/api/boards", methods=["POST"])(write.write_post)
+app.route("/api/boards/<id>", methods=["PUT"])(write.modify_post)
+app.route("/api/boards/<id>", methods=["DELETE"])(write.delete_post)
 
+# detail.py
+app.route("/boards/<id>")(detail_board)
+
+app.route("/api/boards/password")(check_board_password)
+
+app.template_filter("formatdatetime")(format_datetime)
 
 
 
