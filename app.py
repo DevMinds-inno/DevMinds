@@ -3,7 +3,7 @@ import os
 
 # src/*
 from src.model import db, Board
-from src.main import home,get_post
+from src.main import home,get_Boards
 # from src.write import form, write_post, form_id, modify_post
 from src import write
 from src.detail import detail_board, check_board_password, format_datetime
@@ -36,8 +36,11 @@ with app.app_context():
 
 
 # main.py
-app.route("/")(home)
-app.route('/posts')(get_post)
+app.route('/')(home)
+app.route('/<sortType>')(home)
+app.route('/<sortType>/<sortDate>')(home)
+app.route('/api/boards/<sortType>/<sortDate>')(get_Boards)
+
 
 
 # write.py
