@@ -101,24 +101,26 @@ class Write {
       return acc;
     }, {});
   }
-
-  bindValue(key, value) {
-    const $el = $(`[name=${key}]`);
-
-    if ($el.length === 0) return;
-    $el.val(value);
-  }
 }
 
 class ToastEditor {
   constructor(inputId, initContent) {
+    console.log(initContent);
     this.editor = new toastui.Editor({
       el: document.querySelector(inputId), // 에디터를 적용할 요소 (컨테이너)
       height: "100%", // 에디터 영역의 높이 값 (OOOpx || auto)
       initialEditType: "markdown", // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
-      initialValue: initContent, // 에디터의 초기 값
+      initialValue: "", // 에디터의 초기 값
       previewStyle: "vertical", // 'tab' or 'vertical'
+      hooks: {
+        addImageBlobHook(blob, callback) {
+          // 이미지 업로드 로직 커스텀
+          alert("이미지파일 업로드는 지원되지 않습니다.");
+        },
+      },
     });
+
+    this.editor.setHTML(initContent);
   }
 
   initData(data) {
@@ -138,6 +140,7 @@ class ToastEditor {
 }
 
 const write = new Write(data);
+console.log("data", data);
 
 $(document).ready(() => {
   const $form = $("#write-form");

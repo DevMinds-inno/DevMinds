@@ -134,7 +134,7 @@
           title: "{{ post.title }}" ?? "",
           writer: "{{ post.writer }}" ?? "",
           password: "{{ post.password }}" ?? "",
-          content: `{{ post.content }}` ?? "",
+          content: `{{ post.content | safe }}` ?? "",
           img_src: "{{ post.img_src }}" ?? "",
         };
       }
