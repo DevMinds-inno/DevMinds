@@ -67,7 +67,7 @@
                     <div>
                         <span data-bs-toggle="modal" data-bs-target="#updateModal"
                             data-board-id="{{ data.board.id }}">수정</span>
-                            <span data-bs-toggle="modal" data-bs-target="#deleteModal"
+                        <span data-bs-toggle="modal" data-bs-target="#deleteModal"
                             data-board-id="{{ data.board.id }}">삭제</span>
                     </div>
                 </div>
@@ -77,14 +77,15 @@
                 {% if data.board.img_src %}
                 <img width="100%" src="{{ data.board.img_src }}" alt="" style="height: 100%; object-fit: cover;">
                 {% endif %}
-                {{ data.board.content }}
+                {{ data.board.content | safe }}
             </div>
         </div>
 
 
 
         <!-- Modal -->
-        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel-update" aria-hidden="true">
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel-update"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -103,7 +104,8 @@
             </div>
         </div>
 
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel-delete" aria-hidden="true">
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel-delete"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -140,6 +142,8 @@
         </footer>
     </div>
 
+    {% include 'layout/footer.html' %}
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var deleteModal = document.getElementById('updateModal');
@@ -161,84 +165,71 @@
             });
         });
 
-        function checkPasswordAndUpdate() {
-            var id = document.getElementById("board-id-input-update").value;  // ID 값 가져오기
-            var password = document.getElementById("board_password-input-update").value;
-
-            // URL에 id와 password를 포함하여 요청 보내기
-            fetch('/api/boards/password?id=' + id + '&password=' + password, {
+        function sendPasswordRequest(id, encodedPassword, onSuccess, onError) {
+            fetch('/api/boards/password?id=' + id + '&password=' + encodedPassword, {
                 method: 'GET',
                 credentials: 'same-origin'
             }).then(function (response) {
-                return response.text(); // 텍스트 형식으로 응답을 가져옴
+                return response.text();
             }).then(function (data) {
-                console.log(data)
                 if (data === 'PasswordError') {
-                    var errorMessage = document.createElement("div");
-                    errorMessage.classList.add("text-danger");
-                    errorMessage.innerText = "페스워드가 일치하지 않습니다.";
-                    var modalBody = document.querySelector("#updateModal .modal-body");
-                    modalBody.appendChild(errorMessage);
+                    onError("페스워드가 일치하지 않습니다.");
                 } else if (data === 'ok') {
-                    window.location.href = '/boards/form/' + id;
+                    onSuccess();
                 }
             }).catch(function (error) {
                 console.error('Error:', error);
+            });
+        }
+
+        function handlePasswordError(modalId, message) {
+            var errorMessage = document.createElement("div");
+            errorMessage.classList.add("text-danger");
+            errorMessage.innerText = message;
+            var modalBody = document.querySelector(`#${modalId} .modal-body`);
+            modalBody.appendChild(errorMessage);
+        }
+
+        function checkPasswordAndUpdate() {
+            var id = document.getElementById("board-id-input-update").value;
+            var password = document.getElementById("board_password-input-update").value;
+            var encodedPassword = Util.encrypt(password);
+            sendPasswordRequest(id, encodedPassword, function () {
+                window.location.href = '/boards/form/' + id + '?password=' + encodedPassword;
+            }, function (errorMessage) {
+                handlePasswordError("updateModal", errorMessage);
             });
         }
 
         function checkPasswordAndDelete() {
-            var id = document.getElementById("board-id-input-delete").value;  // ID 값 가져오기
+            var id = document.getElementById("board-id-input-delete").value;
             var password = document.getElementById("board_password-input-delete").value;
-
-            // URL에 id와 password를 포함하여 요청 보내기
-            fetch('/api/boards/password?id=' + id + '&password=' + password, {
-                method: 'GET',
-                credentials: 'same-origin'
-            }).then(function (response) {
-                return response.text(); // 텍스트 형식으로 응답을 가져옴
-            }).then(function (data) {
-                console.log(data)
-                if (data === 'PasswordError') {
-                    var errorMessage = document.createElement("div");
-                    errorMessage.classList.add("text-danger");
-                    errorMessage.innerText = "페스워드가 일치하지 않습니다.";
-                    var modalBody = document.querySelector("#deleteModal .modal-body");
-                    modalBody.appendChild(errorMessage);
-                } else if (data === 'ok') {
-                    // DELETE 요청 보내기
-                    fetch('/api/boards/' + id, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        credentials: 'same-origin',
-                        body: JSON.stringify({ password: password })  // 비밀번호를 JSON 형식으로 포함
-                    }).then(function (deleteResponse) {
-                        return deleteResponse.json();
-                    }).then(function (deleteData) {
-                        console.log(deleteData)
-                        if (deleteData.id === id) {
-                            // 성공적으로 삭제된 경우 필요한 후속 조치 수행
-                            console.log('삭제 완료');
-                            window.location.href = '/';
-                        } else {
-                            // 삭제 실패 시 오류 메시지 처리
-                            var deleteErrorMessage = document.createElement("div");
-                            deleteErrorMessage.classList.add("text-danger");
-                            deleteErrorMessage.innerText = "삭제 중 오류가 발생했습니다.";
-                            var modalBody = document.querySelector("#updateModal .modal-body");
-                            modalBody.appendChild(deleteErrorMessage);
-                        }
-                    }).catch(function (error) {
-                        console.error('Error:', error);
-                    });
-
-                }
-            }).catch(function (error) {
-                console.error('Error:', error);
+            var encodedPassword = Util.encrypt(password);
+            sendPasswordRequest(id, encodedPassword, function () {
+                fetch('/api/boards/' + id, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({ password: encodedPassword })
+                }).then(function (deleteResponse) {
+                    return deleteResponse.json();
+                }).then(function (deleteData) {
+                    if (deleteData.id === id) {
+                        console.log('삭제 완료');
+                        window.location.href = '/';
+                    } else {
+                        handlePasswordError("deleteModal", "삭제 중 오류가 발생했습니다.");
+                    }
+                }).catch(function (error) {
+                    console.error('Error:', error);
+                });
+            }, function (errorMessage) {
+                handlePasswordError("deleteModal", errorMessage);
             });
         }
+
     </script>
 
 
