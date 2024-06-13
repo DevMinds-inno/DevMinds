@@ -9,7 +9,6 @@ def form():
 
 def form_id(id):
     post = Board.query.get(id)
-    print(post)
     if post is None:
         return redirect('/boards/form')
     
@@ -24,9 +23,10 @@ def write_post():
     content = data.get('content')
     writer = data.get('writer')
     password = data.get('password')
+    img_src = data.get('img_src')
 
     # DB에 데이터 저장
-    post = Board(title=title, content=content, writer=writer, password=password)
+    post = Board(title=title, content=content, writer=writer, password=password, img_src=img_src)
     db.session.add(post)
     db.session.commit()
 
@@ -45,6 +45,7 @@ def modify_post(id):
     post.title = formData.get('title')
     post.content = formData.get('content')
     post.password = formData.get('password')
+    post.img_src = formData.get('img_src')
     post.updated_dttm = datetime.now()
     db.session.commit()
 

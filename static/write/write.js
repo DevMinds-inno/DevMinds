@@ -6,12 +6,30 @@ class Write {
   }
 
   onInput($input, $output) {
-    $output.html($input.val());
+    this.preview($output, $input.val());
     $input.on("input", () => {
       const value = $input.val();
       const formattedValue = value.replace(/\n/g, "<br>");
-      $output.html(formattedValue);
+      this.preview($output, formattedValue);
     });
+  }
+
+  preview($output, value) {
+    switch ($output.prop("tagName")) {
+      case "IMG":
+        img($output, value);
+        break;
+      default:
+        $output.html(value);
+    }
+
+    function img($output, value) {
+      if (!value.includes("https://")) {
+        alert("https://로 시작하는 이미지 주소를 입력해주세요.");
+        return $output.attr("src", "");
+      }
+      $output.attr("src", "https://" + value.replace("https://", ""));
+    }
   }
 
   back() {
@@ -123,6 +141,7 @@ $(document).ready(() => {
 
   write.onInput($("#title"), $("#result-title"));
   write.onInput($("#content"), $("#result-content"));
+  write.onInput($("#img_src"), $("#result-image"));
 
   $("#back-btn").on("click", () => write.out([$("#title"), $("#content")]));
 });
