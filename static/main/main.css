@@ -3,17 +3,22 @@
   padding: 0;
   list-style: none;
   text-decoration: none;
+  box-sizing: border-box;
 }
 
 body {
   --text1: #212529;
+  --text2: #495057;
   --text3: #868e96;
   --bg-page1: #f8f9fa;
   --bg-element1: #fff;
   --bg-element2: #f8f9fa;
   --bg-element3: #e9ecef;
+  --bg-element5: #212529;
   --border1: #343a40;
   --border4: #f1f3f5;
+  --button-text: #fff;
+  --primary1: #12b886;
   --card-count: 4;
   --width: 25%;
   --spacer: calc(var(--card-count) - 1);
@@ -52,6 +57,46 @@ header {
   height: 40px;
 }
 
+.list li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.list .bi {
+  font-size: 20px;
+}
+
+.write-button {
+  user-select: none;
+  margin: 0 8px;
+  height: 2rem;
+  padding: 0 1rem;
+  font-size: 1rem;
+  border-radius: 1rem;
+  transition: all 0.125s ease-in;
+  cursor: pointer;
+  outline: none;
+  font-weight: 700;
+  word-break: keep-all;
+  border: 1px solid var(--bg-element5);
+  color: var(--bg-element5);
+  background: var(--bg-element2);
+}
+
+.write-button:hover {
+  color: var(--button-text);
+  background: var(--bg-element5);
+  border: 1px solid var(--bg-element5);
+}
+
 .login-button {
   margin-left: 8px;
   height: 2rem;
@@ -72,7 +117,7 @@ header {
   user-select: none;
 }
 
-.sort-bar {
+.home-tag-left {
   padding: 12px;
   display: flex;
   align-items: center;
@@ -104,7 +149,8 @@ header {
   position: relative;
 }
 
-.sort > div > li {
+.sort > div > a {
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -112,15 +158,102 @@ header {
   -webkit-text-decoration: none;
   text-decoration: none;
   white-space: nowrap;
+  color: inherit;
 }
 
-.sort > div > li:not(:first-child) {
+.sort > div > a:not(:first-child) {
   margin-left: 20px;
 }
 
+.sort .bi {
+  margin-right: 8px;
+}
+
 .sort-active {
-  color: var(--text1);
+  color: var(--text1) !important;
   font-weight: 700;
+}
+
+.home-tag-right {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.home-tag-right-selecter {
+  background: var(--bg-element1);
+  height: 32px;
+  width: 100px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-right: 10px;
+  font-weight: 600;
+  color: var(--text2);
+  font-size: 14px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.home-tag-right-selecter:hover {
+  opacity: 0.75;
+}
+
+.home-tag-right-selecter .bi {
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+}
+
+.home-tag-right-selecter-bar {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 5;
+  transform-origin: top right;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.2s ease-in-out;
+}
+
+.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.home-tag-right-selecter-bar-box {
+  margin-top: 8px;
+  width: 192px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+  background: var(--bg-element1);
+  color: var(--text1);
+}
+
+.home-tag-right-selecter-bar-box li {
+  display: block;
+  padding: 0.75rem 1rem;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background: var(--bg-element1);
+  width: 100%;
+  height: 100%;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.selected {
+  color: var(--primary1);
+}
+
+.home-tag-right-selecter-bar-box li:hover {
+  background: var(--bg-element2);
 }
 
 main {
@@ -170,12 +303,17 @@ main {
 }
 
 .card-main-content {
+  color: inherit;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.card-main-content > p {
   height: 3.9375rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
   word-break: break-word;
   word-wrap: break-word;
   font-size: 0.875rem;
@@ -219,11 +357,21 @@ main {
   color: var(--text1);
 }
 
-footer {
-  margin-top: auto;
+.card-footer-like {
+  display: flex;
+  align-items: center;
+  color: var(--text1);
+  font-size: 12px;
 }
 
-.bi {
+.card-footer-like .bi {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.sort-bar .bi {
   font-size: 20px;
   margin-right: 8px;
 }
@@ -231,6 +379,10 @@ footer {
 .dummy {
   background-color: var(--bg-element3);
   border-radius: 4px;
+}
+
+.dummy-list {
+  margin-top: 32px;
 }
 
 .dummy-text {
