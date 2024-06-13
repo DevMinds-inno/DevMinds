@@ -26,8 +26,8 @@ with app.app_context():
     if Board.query.count() == 0:
         initial_data = [
             # password : 1234
-            Board(title='Title 1', content='Content 1', password='A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', writer='Writer 1'),
-            Board(title='Title 2', content='Content 2', password='A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', writer='Writer 2'),
+            Board(title='Title 1', content='Content 1', password='A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', writer='Writer 1', intro='intro1', img_src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'),
+            Board(title='Title 2', content='Content 2', password='A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', writer='Writer 2', intro='intro2', img_src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'),
             # 추가적인 데이터를 여기에 넣을 수 있습니다.
         ]
 
