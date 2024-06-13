@@ -45,6 +45,7 @@ app.route("/boards/form", methods=["GET"])(write.form)
 app.route("/boards/form/<id>", methods=["GET"])(write.form_id)
 app.route("/api/boards", methods=["POST"])(write.write_post)
 app.route("/api/boards/<id>", methods=["PUT"])(write.modify_post)
+app.route("/api/boards/<id>", methods=["DELETE"])(write.delete_post)
 
 # detail.py
 app.route("/boards/<id>")(detail_board)

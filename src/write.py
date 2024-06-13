@@ -36,7 +36,6 @@ def write_post():
     }
 
 
-
 def modify_post(id):    
     formData = request.get_json()
 
@@ -52,4 +51,14 @@ def modify_post(id):
     return {
         'id': post.id,
         'message': '글 수정이 완료되었습니다.'
+    }
+
+def delete_post(id):
+    post = Board.query.get(id)
+    db.session.delete(post)
+    db.session.commit()
+
+    return {
+        'id': id,
+        'message': '글 삭제가 완료되었습니다.'
     }
