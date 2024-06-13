@@ -34,8 +34,11 @@ with app.app_context():
 
 
 # main.py
-app.route("/")(home)
-app.route('/boards')(get_Boards)
+app.route('/')(home)
+app.route('/<sortType>')(home)
+app.route('/<sortType>/<sortDate>')(home)
+app.route('/api/boards/<sortType>/<sortDate>')(get_Boards)
+
 
 
 # write.py
