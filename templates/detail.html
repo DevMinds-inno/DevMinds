@@ -7,11 +7,13 @@
     <title>Bootstrap demo</title>
     <style>
         @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
         .background-banner {
             background-image: linear-gradient(45deg,
-                    rgb(51 43 43 / 75%),
-                    rgb(20 19 20 / 61%)), url("https://cdnimg.melon.co.kr/cm2/album/images/114/87/023/11487023_20240527154018_500.jpg/melon/resize/120/quality/80/optimize");
-            height: 30%;
+                rgb(51 43 43 / 75%),
+                rgb(20 19 20 / 61%)),
+            url("{{ data.board.img_src }}");
+            height: 300px;
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -28,7 +30,7 @@
     <div>
         <nav class="navbar border-bottom border-bottom-dark d-flex justify-content-space-between" data-bs-theme="dark">
             <div class="ms-3">
-                <img width="50" src="{{ data.board.background_url }}" alt="">
+                DevMinds
             </div>
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
@@ -49,10 +51,12 @@
                 </div>
             </nav>
         </nav>
-        <div class="background-banner ">
-
+        <div class="background-banner d-flex align-items-center justify-content-center">
+            <div class="text-center">
+                <h1 class="display-5 fw-bold text-body-emphasis">{{ data.board.title }}</h1>
+            </div>
         </div>
-        <div class="content mt-5 mx-auto" style="width: 768px;">
+        <div class="content mt-5 mx-auto" style="width: 768px; min-height: 60vh;">
             <div class="head-wrapper">
                 <h1>{{ data.board.title }}</h1>
                 <div class="d-flex justify-content-between">
@@ -69,6 +73,9 @@
             </div>
 
             <div class="py-5 my-5">
+                {% if data.board.img_src %}
+                    <img width="100%" src="{{ data.board.img_src }}" alt="" style="height: 100%; object-fit: cover;">
+                {% endif %}
                 {{ data.board.content }}
             </div>
         </div>
@@ -167,7 +174,7 @@
                     var modalBody = document.querySelector("#updateModal .modal-body");
                     modalBody.appendChild(errorMessage);
                 } else if (data === 'ok') {
-                    window.location.href = '/boards/form/'+id;
+                    window.location.href = '/boards/form/' + id;
                 }
             }).catch(function (error) {
                 console.error('Error:', error);
