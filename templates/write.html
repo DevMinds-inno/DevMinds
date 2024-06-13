@@ -50,6 +50,7 @@
             <div class="form-floating">
               <input
                 type="password"
+                id="password"
                 name="password"
                 class="form-control border-0"
                 required
@@ -101,7 +102,7 @@
           title: "{{ post.title }}" ?? "",
           writer: "{{ post.writer }}" ?? "",
           password: "{{ post.password }}" ?? "",
-          content: "{{ post.content }}" ?? "",
+          content: `{{ post.content }}` ?? "",
         };
       }
     </script>

@@ -9,8 +9,9 @@ def form():
 
 def form_id(id):
     post = Board.query.get(id)
+    print(post)
     if post is None:
-        return redirect('/boards/write')
+        return redirect('/boards/form')
     
     return render_template('/write.html', post=post)
 
@@ -30,7 +31,7 @@ def write_post():
     db.session.commit()
 
     return {
-        'post_id': post.id,
+        'id': post.id,
         'message': '글 작성이 완료되었습니다.'
     }
 
@@ -48,6 +49,6 @@ def modify_post(id):
     db.session.commit()
 
     return {
-        'post_id': post.id,
+        'id': post.id,
         'message': '글 수정이 완료되었습니다.'
     }

@@ -88,7 +88,7 @@ class Write {
   }
 
   bindValue(key, value) {
-    const $el = $(`#${key}`);
+    const $el = $(`[name=${key}]`);
 
     if ($el.length === 0) return;
     $el.val(value);
@@ -99,6 +99,12 @@ const write = new Write(data);
 $(document).ready(() => {
   if (data) {
     // 편집모드
+    const inputPassword = prompt("비밀번호를 입력해주세요.");
+    if (inputPassword !== data.password) {
+      alert("비밀번호가 일치하지 않습니다.");
+      write.back();
+    }
+
     $("#write-form").on("submit", (e) => {
       e.preventDefault();
       write.editSave(e.target);
@@ -118,5 +124,5 @@ $(document).ready(() => {
   write.onInput($("#title"), $("#result-title"));
   write.onInput($("#content"), $("#result-content"));
 
-  $("#back-btn").on("click", () => write.out([$title, $content]));
+  $("#back-btn").on("click", () => write.out([$("#title"), $("#content")]));
 });
