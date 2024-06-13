@@ -46,24 +46,7 @@ class Write {
     const reqData = Write.getFormData($($form));
     Object.assign(reqData, addData);
 
-    const res = await fetch("/api/boards", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reqData),
-    });
-
-    if (!res.ok) {
-      alert("글 작성에 실패했습니다.");
-      return;
-    }
-
-    const resJson = await res.json();
-    resJson.message && alert(resJson.message);
-    resJson.id
-      ? (location.href = `/boards/${resJson.id}`)
-      : (location.href = "/");
+    await Write.apiBoards("POST", reqData);
   }
 
   async editSave($form, addData = {}) {
@@ -75,8 +58,14 @@ class Write {
     if (!writeObj.formData) throw new Error("formData is not defined");
 
     const postId = writeObj.formData.id;
-    const res = await fetch(`/api/boards/${postId}`, {
-      method: "PUT",
+    await Write.apiBoards("PUT", reqData, postId);
+  }
+
+  static async apiBoards(method, reqData, id) {
+    reqData.password = Util.encrypt(reqData.password);
+    const url = id ? `/api/boards/${id}` : "/api/boards";
+    const res = await fetch(url, {
+      method,
       headers: {
         "Content-Type": "application/json",
       },
@@ -84,7 +73,7 @@ class Write {
     });
 
     if (!res.ok) {
-      alert("글 수정에 실패했습니다.");
+      alert("실패했습니다.");
       return;
     }
 
@@ -105,7 +94,6 @@ class Write {
 
 class ToastEditor {
   constructor(inputId, initContent) {
-    console.log(initContent);
     this.editor = new toastui.Editor({
       el: document.querySelector(inputId), // 에디터를 적용할 요소 (컨테이너)
       height: "100%", // 에디터 영역의 높이 값 (OOOpx || auto)
@@ -140,7 +128,6 @@ class ToastEditor {
 }
 
 const write = new Write(data);
-console.log("data", data);
 
 $(document).ready(() => {
   const $form = $("#write-form");
@@ -154,11 +141,11 @@ $(document).ready(() => {
 
   if (data) {
     // 편집모드
-    const inputPassword = prompt("비밀번호를 입력해주세요.");
-    if (inputPassword !== data.password) {
-      alert("비밀번호가 일치하지 않습니다.");
-      Util.back();
-    }
+    // const inputPassword = prompt("비밀번호를 입력해주세요.");
+    // if (inputPassword !== data.password) {
+    //   alert("비밀번호가 일치하지 않습니다.");
+    //   Util.back();
+    // }
 
     $submitBtn.off().on("click", (e) => {
       write.editSave($form, { content: editor.getHTML() });
