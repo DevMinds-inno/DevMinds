@@ -62,7 +62,8 @@ const createBoardList = (data) => {
             <div class="card-image-box">
               <img class="card-image" src="${board.img_src}" alt="${board.title}_image" />
             </div>
-          </a>`
+          </a>
+          `
             : ""
         }
      
@@ -129,7 +130,11 @@ const loadboards = async () => {
     if (data.length === 0) {
       hasMoreData = false;
       hideDummy();
-      console.log("포스트 없습니다.");
+      const newElement = document.createElement("div");
+      const mainElement = document.querySelector("main");
+      newElement.classList.add("notBoards");
+      newElement.textContent = "게시물이 없습니다.";
+      mainElement.appendChild(newElement);
       return;
     }
 
@@ -160,6 +165,7 @@ const handleScroll = () => {
 window.addEventListener("scroll", handleScroll);
 document.addEventListener("DOMContentLoaded", () => {
   createLoadingDummy();
+  resetCardList();
   loadboards();
 });
 
@@ -230,7 +236,9 @@ selectBarList.addEventListener("click", (e) => {
   e.target.classList.add("selected");
 
   sortDate = id;
+  hideSelectBar();
   history.pushState(null, null, `/${sortType}/${sortDate}`);
+
   resetCardList();
   loadboards();
 });

@@ -52,7 +52,7 @@ def get_Boards(sortType = 'recent', sortDate = 'week'):
         }
         posts_list.append(post_data)
 
-    # sleep(1) # 로딩구현을 위해 응답시간 추가
+    sleep(1) # 로딩구현을 위해 응답시간 추가
 
     # #JSON 형식으로 변환하여 반환
     return jsonify(posts_list)
