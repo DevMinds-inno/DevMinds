@@ -1,9 +1,12 @@
 console.log("hello world");
 
 class Write {
-  constructor() {}
+  constructor(formData) {
+    this.formData = formData;
+  }
 
   onInput($input, $output) {
+    $output.html($input.val());
     $input.on("input", () => {
       const value = $input.val();
       const formattedValue = value.replace(/\n/g, "<br>");
@@ -26,19 +29,10 @@ class Write {
     }
   }
 
-  async submit(e) {
-    e.preventDefault();
+  async newSave(formThis) {
+    const reqData = write.getFormData($(formThis));
 
-    // form의 input 요소의 name과 value를 가져옵니다.
-    let formData = $("#write-form").serializeArray();
-
-    let reqData = {};
-    formData.forEach((input) => {
-      reqData[input.name] = input.value;
-    });
-
-    // POST 요청을 보냅니다.
-    const res = await fetch("/boards", {
+    const res = await fetch("/api/boards", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,23 +47,76 @@ class Write {
 
     const resJson = await res.json();
     resJson.message && alert(resJson.message);
-    resJson.post_id
-      ? (location.href = `/boards/${resJson.post_id}`)
+    resJson.id
+      ? (location.href = `/boards/${resJson.id}`)
       : (location.href = "/");
+  }
+
+  async editSave(formThis) {
+    const writeObj = this;
+
+    const reqData = write.getFormData($(formThis));
+
+    if (!writeObj.formData) throw new Error("formData is not defined");
+
+    const postId = writeObj.formData.id;
+    const res = await fetch(`/api/boards/${postId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reqData),
+    });
+
+    if (!res.ok) {
+      alert("글 수정에 실패했습니다.");
+      return;
+    }
+
+    const resJson = await res.json();
+    resJson.message && alert(resJson.message);
+    resJson.id
+      ? (location.href = `/boards/${resJson.id}`)
+      : (location.href = "/");
+  }
+
+  getFormData($form) {
+    return $form.serializeArray().reduce((acc, input) => {
+      acc[input.name] = input.value;
+      return acc;
+    }, {});
+  }
+
+  bindValue(key, value) {
+    const $el = $(`#${key}`);
+
+    if ($el.length === 0) return;
+    $el.val(value);
   }
 }
 
+const write = new Write(data);
 $(document).ready(() => {
-  const write = new Write();
+  if (data) {
+    // 편집모드
+    $("#write-form").on("submit", (e) => {
+      e.preventDefault();
+      write.editSave(e.target);
+    });
+    $("#writer").attr("readonly", "readonly");
+    for (const [key, value] of Object.entries(data)) {
+      write.bindValue(key, value);
+    }
+  } else {
+    // 작성모드
+    $("#write-form").on("submit", (e) => {
+      e.preventDefault();
+      write.newSave(e.target);
+    });
+  }
 
-  const $title = $("#title");
-  const $writer = $("#writer");
-  const $password = $("#password");
-  const $content = $("#content");
-
-  const $writeForm = write.onInput($title, $("#result-title"));
-  write.onInput($content, $("#result-content"));
+  write.onInput($("#title"), $("#result-title"));
+  write.onInput($("#content"), $("#result-content"));
 
   $("#back-btn").on("click", () => write.out([$title, $content]));
-  $("#write-form").on("submit", write.submit);
 });

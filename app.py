@@ -4,7 +4,8 @@ import os
 # src/*
 from src.model import db, Board
 from src.main import home,get_post
-from src.write import write, write_post
+# from src.write import form, write_post, form_id, modify_post
+from src import write
 from src.detail import detail_board, check_board_password, format_datetime
 # src/*
 
@@ -40,9 +41,10 @@ app.route('/posts')(get_post)
 
 
 # write.py
-app.route("/boards/write", methods=["GET"])(write)
-# app.route("/boards/write/<id>", methods=["GET"])(write_id)
-app.route("/api/boards", methods=["POST"])(write_post)
+app.route("/boards/form", methods=["GET"])(write.form)
+app.route("/boards/form/<id>", methods=["GET"])(write.form_id)
+app.route("/api/boards", methods=["POST"])(write.write_post)
+app.route("/api/boards/<id>", methods=["PUT"])(write.modify_post)
 
 # detail.py
 app.route("/boards/<id>")(detail_board)

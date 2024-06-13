@@ -89,7 +89,23 @@
         <div id="result-content"></div>
       </div>
     </div>
+
     {% include 'layout/footer.html' %}
+
+    <script>
+      let data = null;
+
+      if ("{{post}}" !== "None") {
+        data = {
+          id: "{{ post.id }}" ?? "",
+          title: "{{ post.title }}" ?? "",
+          writer: "{{ post.writer }}" ?? "",
+          password: "{{ post.password }}" ?? "",
+          content: "{{ post.content }}" ?? "",
+        };
+      }
+    </script>
+
     <script src="{{ url_for('static', filename='write/write.js') }}"></script>
   </body>
 </html>
