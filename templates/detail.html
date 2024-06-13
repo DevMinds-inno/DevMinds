@@ -26,11 +26,11 @@
 
 </head>
 
-<body data-bs-theme="dark">
+<body>
     <div>
         <nav class="navbar border-bottom border-bottom-dark d-flex justify-content-space-between" data-bs-theme="dark">
             <div class="ms-3">
-                DevMinds
+                <a class="nav-link text-black" aria-current="page" href="{{ url_for('home')}}">DevMinds</a>
             </div>
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
@@ -41,10 +41,10 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-white" aria-current="page" href="{{ url_for('home')}}">Home</a>
+                                <a class="nav-link text-black" aria-current="page" href="{{ url_for('home')}}">목록으로</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white">Menu</a>
+                                <a class="nav-link text-black" aria-current="page" href="{{ url_for('form')}}">새글작성</a>
                             </li>
                         </ul>
                     </div>
@@ -67,14 +67,15 @@
                     <div>
                         <span data-bs-toggle="modal" data-bs-target="#updateModal"
                             data-board-id="{{ data.board.id }}">수정</span>
-                        <span data-bs-toggle="modal" data-bs-target="#deleteModal">삭제</span>
+                            <span data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            data-board-id="{{ data.board.id }}">삭제</span>
                     </div>
                 </div>
             </div>
 
             <div class="py-5 my-5">
                 {% if data.board.img_src %}
-                    <img width="100%" src="{{ data.board.img_src }}" alt="" style="height: 100%; object-fit: cover;">
+                <img width="100%" src="{{ data.board.img_src }}" alt="" style="height: 100%; object-fit: cover;">
                 {% endif %}
                 {{ data.board.content }}
             </div>
@@ -83,34 +84,39 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel-update" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">수정하시겠습니까?</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel-update">수정하시겠습니까?</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="board-id-input" name="id">
+                            <input type="hidden" class="form-control" id="board-id-input-update" name="id">
                             <label for="username-input" class="form-label">비밀번호를 입력해주세요.</label>
-                            <input type="text" class="form-control" id="board_password-input" name="password">
+                            <input type="text" class="form-control" id="board_password-input-update" name="password">
                         </div>
-                        <button type="button" class="btn btn-danger" onclick="checkPassword()">수정하기</button>
+                        <button type="button" class="btn btn-danger" onclick="checkPasswordAndUpdate()">수정하기</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel-delete" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">삭제하시겠습니까?</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel-delete">삭제하시겠습니까?</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <a class="btn btn-danger" href="{{ url_for('detail_board', id=data.board.id) }}">삭제하기</a>
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" id="board-id-input-delete" name="id">
+                            <label for="username-input" class="form-label">비밀번호를 입력해주세요.</label>
+                            <input type="text" class="form-control" id="board_password-input-delete" name="password">
+                        </div>
+                        <button type="button" class="btn btn-danger" onclick="checkPasswordAndDelete()">삭제하기</button>
                     </div>
                 </div>
             </div>
@@ -140,7 +146,7 @@
             deleteModal.addEventListener('show.bs.modal', function (event) {
                 var button = event.relatedTarget;
                 var boardId = button.getAttribute('data-board-id');
-                var songIdInput = document.getElementById('board-id-input');
+                var songIdInput = document.getElementById('board-id-input-update');
                 songIdInput.value = boardId;
             });
         });
@@ -149,15 +155,15 @@
             var deleteModal = document.getElementById('deleteModal');
             deleteModal.addEventListener('show.bs.modal', function (event) {
                 var button = event.relatedTarget;
-                var modalIdElement = document.getElementById('modal-song-id');
-                modalIdElement.textContent = '곡 ID: ' + songId;
-                songIdInput.value = songId;
+                var boardId = button.getAttribute('data-board-id');
+                var songIdInput = document.getElementById('board-id-input-delete');
+                songIdInput.value = boardId;
             });
         });
 
-        function checkPassword() {
-            var id = document.getElementById("board-id-input").value;  // ID 값 가져오기
-            var password = document.getElementById("board_password-input").value;
+        function checkPasswordAndUpdate() {
+            var id = document.getElementById("board-id-input-update").value;  // ID 값 가져오기
+            var password = document.getElementById("board_password-input-update").value;
 
             // URL에 id와 password를 포함하여 요청 보내기
             fetch('/api/boards/password?id=' + id + '&password=' + password, {
@@ -175,6 +181,59 @@
                     modalBody.appendChild(errorMessage);
                 } else if (data === 'ok') {
                     window.location.href = '/boards/form/' + id;
+                }
+            }).catch(function (error) {
+                console.error('Error:', error);
+            });
+        }
+
+        function checkPasswordAndDelete() {
+            var id = document.getElementById("board-id-input-delete").value;  // ID 값 가져오기
+            var password = document.getElementById("board_password-input-delete").value;
+
+            // URL에 id와 password를 포함하여 요청 보내기
+            fetch('/api/boards/password?id=' + id + '&password=' + password, {
+                method: 'GET',
+                credentials: 'same-origin'
+            }).then(function (response) {
+                return response.text(); // 텍스트 형식으로 응답을 가져옴
+            }).then(function (data) {
+                console.log(data)
+                if (data === 'PasswordError') {
+                    var errorMessage = document.createElement("div");
+                    errorMessage.classList.add("text-danger");
+                    errorMessage.innerText = "페스워드가 일치하지 않습니다.";
+                    var modalBody = document.querySelector("#deleteModal .modal-body");
+                    modalBody.appendChild(errorMessage);
+                } else if (data === 'ok') {
+                    // DELETE 요청 보내기
+                    fetch('/api/boards/' + id, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({ password: password })  // 비밀번호를 JSON 형식으로 포함
+                    }).then(function (deleteResponse) {
+                        return deleteResponse.json();
+                    }).then(function (deleteData) {
+                        console.log(deleteData)
+                        if (deleteData.id === id) {
+                            // 성공적으로 삭제된 경우 필요한 후속 조치 수행
+                            console.log('삭제 완료');
+                            window.location.href = '/';
+                        } else {
+                            // 삭제 실패 시 오류 메시지 처리
+                            var deleteErrorMessage = document.createElement("div");
+                            deleteErrorMessage.classList.add("text-danger");
+                            deleteErrorMessage.innerText = "삭제 중 오류가 발생했습니다.";
+                            var modalBody = document.querySelector("#updateModal .modal-body");
+                            modalBody.appendChild(deleteErrorMessage);
+                        }
+                    }).catch(function (error) {
+                        console.error('Error:', error);
+                    });
+
                 }
             }).catch(function (error) {
                 console.error('Error:', error);
