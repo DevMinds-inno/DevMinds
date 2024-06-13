@@ -89,6 +89,14 @@
                   required
                   placeholder="게시글 비밀번호를 입력해주세요."
                   value="{{ post.password }}"
+                  {%
+                  if
+                  post
+                  %}
+                  readonly
+                  {%
+                  endif
+                  %}
                 />
                 <label for="password">게시글 비밀번호</label>
               </div>

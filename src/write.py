@@ -43,7 +43,7 @@ def modify_post(id):
     # DB에 데이터 저장
     post.title = formData.get('title')
     post.content = formData.get('content')
-    post.password = formData.get('password')
+    # post.password = formData.get('password')
     post.img_src = formData.get('img_src')
     post.updated_dttm = datetime.now()
     db.session.commit()
