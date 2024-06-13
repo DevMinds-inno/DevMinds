@@ -1,6 +1,7 @@
 from flask import render_template, request,redirect
 from src.model import Board, db
 from datetime import datetime
+import re
 
 
 
@@ -9,8 +10,17 @@ def form():
 
 def form_id(id):
     post = Board.query.get(id)
+    password = request.args.get("password")
+
     if post is None:
         return redirect('/boards/form')
+
+    if(id == None or password == None):
+        return redirect('/boards/form')
+    
+    if(post.password != password):
+        return redirect('/boards/form')
+
     
     return render_template('/write.html', post=post)
 
@@ -21,12 +31,13 @@ def write_post():
 
     title = data.get('title')
     content = data.get('content')
+    intro = remove_html_tags(content)
     writer = data.get('writer')
     password = data.get('password')
     img_src = data.get('img_src')
 
     # DB에 데이터 저장
-    post = Board(title=title, content=content, writer=writer, password=password, img_src=img_src)
+    post = Board(title=title, content=content, writer=writer, password=password, img_src=img_src, intro=intro)
     db.session.add(post)
     db.session.commit()
 
@@ -43,7 +54,8 @@ def modify_post(id):
     # DB에 데이터 저장
     post.title = formData.get('title')
     post.content = formData.get('content')
-    post.password = formData.get('password')
+    post.intro = remove_html_tags(post.content)
+    # post.password = formData.get('password')
     post.img_src = formData.get('img_src')
     post.updated_dttm = datetime.now()
     db.session.commit()
@@ -62,3 +74,10 @@ def delete_post(id):
         'id': id,
         'message': '글 삭제가 완료되었습니다.'
     }
+
+
+
+def remove_html_tags(content):
+    cleanr = re.compile('<.*?>')
+    cleantext = re.sub(cleanr, ' ', content)
+    return cleantext[:100]

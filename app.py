@@ -25,8 +25,9 @@ with app.app_context():
 # 데이터베이스에 데이터가 없는 경우에만 초기 데이터 생성
     if Board.query.count() == 0:
         initial_data = [
-            Board(title='Title 1', content='Content 1', password='password1', writer='Writer 1'),
-            Board(title='Title 2', content='Content 2', password='password2', writer='Writer 2'),
+            # password : 1234
+            Board(title='Title 1', content='Content 1', password='A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', writer='Writer 1', intro='intro1', img_src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'),
+            Board(title='Title 2', content='Content 2', password='A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', writer='Writer 2', intro='intro2', img_src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'),
             # 추가적인 데이터를 여기에 넣을 수 있습니다.
         ]
 

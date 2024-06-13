@@ -44,7 +44,7 @@ def get_Boards(sortType = 'recent', sortDate = 'week'):
         post_data = {
             "id":post.id,
             'title': post.title,
-            'content': post.content,
+            'intro': post.intro,
             'writer': post.writer,
             'img_src': post.img_src,
             'created_dttm': post.created_dttm.strftime('%Y-%m-%d'), 
@@ -59,7 +59,7 @@ def get_Boards(sortType = 'recent', sortDate = 'week'):
     # return posts_list
 
 
-#  날짜 변경 함수 클라이언트 -> 서버 변경 
+#  날짜 변경 함수 
 def changeDate(date):
     dateArray = date.split("-")
     return f"{dateArray[0]}년 {dateArray[1]}월 {dateArray[2]}일"
