@@ -3,7 +3,7 @@ import os
 
 # src/*
 from src.model import db, Board
-from src.main import home,get_post
+from src.main import home,get_Boards
 from src.write import write, write_post
 # src/*
 
@@ -35,7 +35,7 @@ with app.app_context():
 
 # main.py
 app.route("/")(home)
-app.route('/posts')(get_post)
+app.route('/boards')(get_Boards)
 
 
 # write.py

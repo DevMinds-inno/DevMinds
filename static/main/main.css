@@ -181,7 +181,6 @@ main {
   font-size: 0.875rem;
   line-height: 1.5;
   color: var(--text2);
-  margin: 0 0 1.5rem;
 }
 
 .card-image-box {
@@ -231,6 +230,10 @@ footer {
 .dummy {
   background-color: var(--bg-element3);
   border-radius: 4px;
+}
+
+.dummy-list {
+  margin-top: 32px;
 }
 
 .dummy-text {

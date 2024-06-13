@@ -1,12 +1,13 @@
 from flask import render_template, request, jsonify
 from src.model import Board
 from sqlalchemy import desc
+from time import sleep
 
 
 def home():
     return render_template('index.html')
 
-def get_post():
+def get_Boards():
     sortType = request.args.get('sortType', 'recent', type=str)
     print(sortType)
     page = request.args.get('page', 1, type=int)
@@ -25,11 +26,19 @@ def get_post():
             'content': post.content,
             'writer': post.writer,
             'created_dttm': post.created_dttm.strftime('%Y-%m-%d'), 
-            'updated_dttm': post.updated_dttm.strftime('%Y-%m-%d')   
+            'updated_dttm': changeDate(post.updated_dttm.strftime('%Y-%m-%d') )  
         }
         posts_list.append(post_data)
+
+    sleep(1) # 로딩구현을 위해 응답시간 추가
     
     # #JSON 형식으로 변환하여 반환
     return jsonify(posts_list)
     # return posts_list
+
+
+#  날짜 변경 함수 클라이언트 -> 서버 변경 
+def changeDate(date):
+    dateArray = date.split("-")
+    return f"{dateArray[0]}년 {dateArray[1]}월 {dateArray[2]}일"
 
