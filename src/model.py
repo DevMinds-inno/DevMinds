@@ -7,7 +7,7 @@ db = SQLAlchemy()
 class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.String(10000), nullable=False)
+    content = db.Column(db.String, nullable=False)
     password = db.Column(db.String(20), nullable=False)
     writer = db.Column(db.String(20), nullable=False)
     img_src = db.Column(db.String(1000), nullable=True)
