@@ -128,6 +128,8 @@ $(document).ready(() => {
       write.editSave(e.target);
     });
     $("#writer").attr("readonly", "readonly");
+    $("#submit").text("수정하기");
+
     for (const [key, value] of Object.entries(data)) {
       write.bindValue(key, value);
     }
