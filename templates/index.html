@@ -4,7 +4,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% include 'layout/header.html' %}
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='main/main.css') }}"
@@ -21,44 +24,68 @@
         <!-- 헤더 -->
         <header>
           <div class="header">
-            <div>DevMinds</div>
+            <div>
+              <a href="/">DevMinds</a>
+            </div>
             <div>
               <ul class="list">
-                <li>알림</li>
-                <li>검색</li>
-                <li>
+                <li><i class="bi bi-bell"></i></li>
+                <li><i class="bi bi-search"></i></li>
+                <div>
+                  <a href="/boards/form">
+                    <button class="write-button">새 글 작성</button>
+                  </a>
+                </div>
+                <div>
                   <button class="login-button">로그인</button>
-                </li>
+                </div>
               </ul>
             </div>
           </div>
         </header>
 
         <!-- 정렬버튼바 -->
-        <nav class="sort-bar">
+        <nav class="home-tag-left">
           <ul class="sort">
             <div>
-              <li id="like" class="sort-active">
+              <a id="like" class="sort-active">
                 <i class="bi bi-heart me-2"></i>
                 <span>트렌딩</span>
-              </li>
-              <li id="recent">
-                <i class="bi bi-clock me-2"></i> <span>최신</span>
-              </li>
-              <li>피드</li>
+              </a>
+              <a id="recent">
+                <i class="bi bi-clock me-2"></i>
+                <span>최신</span>
+              </a>
+              <a>피드</a>
               <div class="sort-bar-underline"></div>
             </div>
           </ul>
 
-          <div>이번주</div>
+          <div class="home-tag-right">
+            <div class="home-tag-right-selecter">
+              <p class="home-tag-right-value">이번 주</p>
+              <i class="bi bi-caret-down-fill"></i>
+            </div>
+            <i class="bi bi-three-dots-vertical"></i>
+            <div class="home-tag-right-selecter-bar">
+              <div class="home-tag-right-selecter-bar-box">
+                <u class="home-tag-right-list">
+                  <li id="today">오늘</li>
+                  <li id="week" class="selected">이번 주</li>
+                  <li id="month">이번 달</li>
+                  <li id="year">올해</li>
+                </u>
+              </div>
+            </div>
+          </div>
         </nav>
 
         <!-- 메인 -->
         <main>
           <ul id="card-list" class="card-list">
-            <!-- 카드 자동 생성 -->
+            <!-- 카드 리스트 -->
           </ul>
-          <ul id="loading-dummy" class="card-list"></ul>
+          <ul id="loading-dummy" class="card-list dummy-list"></ul>
         </main>
       </div>
     </div>
