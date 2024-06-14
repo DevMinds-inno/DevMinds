@@ -177,7 +177,7 @@ header {
   width: 32%;
   height: 2px;
   background: var(--border1);
-  left: 2%;
+  left: 44%;
   bottom: -10px;
   transition: left 0.3s ease;
 }
