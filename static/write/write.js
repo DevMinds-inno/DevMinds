@@ -62,7 +62,7 @@ class Write {
   }
 
   static async apiBoards(method, reqData, id) {
-    reqData.password = Util.encrypt(reqData.password);
+    reqData.password = Util.encryptForPost(reqData.password);
     const url = id ? `/api/boards/${id}` : "/api/boards";
     const res = await fetch(url, {
       method,
