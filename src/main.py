@@ -1,7 +1,6 @@
 from flask import render_template, request, jsonify,abort  
 from src.model import Board
 from sqlalchemy import desc
-from time import sleep
 from datetime import datetime, timedelta, timezone
 
 
@@ -12,11 +11,8 @@ def home(sortType='recent', sortDate='week'):
     return render_template('index.html')
 
 def get_Boards(sortType = 'recent', sortDate = 'week'):
-
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
-    # desc(Board.likesCount)
-    # desc(Board.id)
     type = (Board.id) if sortType == 'like' else (desc(Board.id))
 
    # 오늘 날짜 기준으로 필터링
@@ -55,11 +51,8 @@ def get_Boards(sortType = 'recent', sortDate = 'week'):
         }
         posts_list.append(post_data)
 
-    # sleep(3) # 로딩구현을 위해 응답시간 추가
-
     # #JSON 형식으로 변환하여 반환
     return jsonify(posts_list)
-    # return posts_list
 
 
 #  날짜 변경 함수 

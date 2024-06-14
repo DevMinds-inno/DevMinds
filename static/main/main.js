@@ -182,17 +182,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     filterElement.classList.add("selected");
   }
-
+  changeSortType(sortType);
   createLoadingDummy();
   resetBoardList();
   loadboards();
 });
 
 // home-tag-left
-sortLike.addEventListener("click", () => changeSortType("like"));
-sortRecent.addEventListener("click", () => changeSortType("recent"));
+sortLike.addEventListener("click", function () {
+  changeSortType(this.id);
+  loadSortTypeData();
+});
+sortRecent.addEventListener("click", function () {
+  changeSortType(this.id);
+  loadSortTypeData();
+});
 
 const changeSortType = (type) => {
+  if (!type) {
+    sortType = "recent";
+    return;
+  }
+
   if (type === "recent") {
     underLine.style.left = "44%";
     sortLike.classList.remove("sort-active");
@@ -204,8 +215,10 @@ const changeSortType = (type) => {
     sortRecent.classList.remove("sort-active");
     sortLike.classList.add("sort-active");
   }
-
   sortType = type;
+};
+
+const loadSortTypeData = () => {
   history.pushState(null, null, `/${sortType}`);
   resetBoardList();
   loadboards();
