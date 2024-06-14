@@ -10,8 +10,17 @@ def form():
 
 def form_id(id):
     post = Board.query.get(id)
+    password = request.args.get("password")
+
     if post is None:
         return redirect('/boards/form')
+
+    if(id == None or password == None):
+        return redirect('/boards/form')
+    
+    if(post.password != password):
+        return redirect('/boards/form')
+
     
     return render_template('/write.html', post=post)
 
