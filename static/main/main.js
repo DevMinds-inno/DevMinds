@@ -13,8 +13,8 @@ const pathParts = window.location.pathname.split("/");
 const PER_PAGE = 8; // 한번에 가져올 페이지개수
 
 // 변수
-let sortType = pathParts[1] || "recent";
-let sortDate = pathParts[2] || "week";
+let sortType = pathParts[1];
+let sortDate = pathParts[2];
 let page = 1; // 기본페이지
 let hasMoreData = true; //데이터를 더 가져올 수 있는지 여부
 let isLoading = false;
@@ -107,6 +107,8 @@ const resetBoardList = () => {
 
 // boardList 요청 함수
 const loadboards = async () => {
+  notBoardsBox.classList.remove("visible");
+
   // 로딩중이거나 가져올 데이터가 없을 때
   if (isLoading || !hasMoreData) return;
 
@@ -169,14 +171,17 @@ document.addEventListener("DOMContentLoaded", () => {
     (element) => sortDate === element.id
   );
 
-  [...childrenArray].forEach((element) => {
-    element.classList.remove("selected");
-  });
-
   selectValue.textContent = filterElement
     ? filterElement.textContent
-    : sortDate;
-  if (filterElement) filterElement.classList.add("selected");
+    : "이번주";
+
+  if (filterElement) {
+    [...childrenArray].forEach((element) => {
+      element.classList.remove("selected");
+    });
+
+    filterElement.classList.add("selected");
+  }
 
   createLoadingDummy();
   resetBoardList();

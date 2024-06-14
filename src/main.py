@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify,abort  
 from src.model import Board
 from sqlalchemy import desc
 from time import sleep
@@ -6,9 +6,13 @@ from datetime import datetime, timedelta, timezone
 
 
 def home(sortType='recent', sortDate='week'):
+    if sortType not in ["recent", "like"] or sortDate not in ["today", "week", "month", "year"]:
+        abort(404)
+
     return render_template('index.html')
 
 def get_Boards(sortType = 'recent', sortDate = 'week'):
+
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     # desc(Board.likesCount)
@@ -32,7 +36,6 @@ def get_Boards(sortType = 'recent', sortDate = 'week'):
     else:
         start_date = None
         end_date = None
-    print(start_date, end_date)
 
     # \을 사용하여 줄바꿈
     posts = Board.query.filter(Board.updated_dttm >= start_date, Board.updated_dttm < end_date) \
@@ -52,7 +55,7 @@ def get_Boards(sortType = 'recent', sortDate = 'week'):
         }
         posts_list.append(post_data)
 
-    # sleep(1) # 로딩구현을 위해 응답시간 추가
+    # sleep(3) # 로딩구현을 위해 응답시간 추가
 
     # #JSON 형식으로 변환하여 반환
     return jsonify(posts_list)
