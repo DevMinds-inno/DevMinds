@@ -4,6 +4,7 @@ import os
 # src/*
 from src.model import db, Board
 from src.main import home,get_Boards
+from src.notFound import notFound
 # from src.write import form, write_post, form_id, modify_post
 from src import write
 from src.detail import detail_board, check_board_password, format_datetime
@@ -59,6 +60,8 @@ app.route("/api/boards/password")(check_board_password)
 app.template_filter("formatdatetime")(format_datetime)
 
 
+#404
+app.errorhandler(404)(notFound)
 
 
 
