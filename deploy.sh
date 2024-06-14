@@ -7,6 +7,9 @@ echo "== 1. DONE :: BackUp to bak ==="
 # 2. unzip
 cd 
 unzip -q archive.zip -d ./prod/
+
+# database.db 복구
+cp -f ./bak/database.db ./prod/database.db
 echo "== 2. DONE :: Unzip to Prod ==="
 
 # 3. 가상환경 셋팅 
