@@ -28,7 +28,6 @@
   - js 스크롤 시 데이터를 불러오는 함수 실행
     <br/><img src="assets/sc-1.png" style="height:200px"/>
   - py paginate를 사용하여 설정한 값만큼 데이터 가져오기
-    ![pagenation.PNG](https://prod-files-secure.s3.us-west-2.amazonaws.com/83c75a39-3aba-4ba4-a792-7aefe4b07895/04abd4ac-ad8e-407c-8ec6-31f071c2241c/pagenation.png)
     - 로딩화면
       - loading 시 더미데이터를 보이도록 했어요.
     - 정렬기능
@@ -105,7 +104,7 @@
     3. bash deploy.sh 명령어로 배포 끝!
 
   - [📌 코드 Split] `관심사` 기준으로 코드를 분리해서 **`가독성`과 `재사용성`을 높였어요.**
-    - [app.py](http://app.py) 코드 split
+    - app.py 코드 split
       1. app.py코드를 src/\*.py 파일에서 import했어요.
     - html파일 split
       - header.html, footer.html
@@ -123,6 +122,24 @@
     2. 추천기능, 마이페이지 기능을 개발하기 위해서는 로그인 기능이 선행되어야 함
 
 ## 🪛 **기타 Tools**
+
+### 프로젝트 실행 환경 및 방법
+
+- `Python 3.8.2`
+
+1. 가상환경 세팅
+
+- `python -m venv venv`
+- `source venv/bin/activate`
+
+2. 의존성 설치
+
+- `pip install -r requirements.txt`
+
+3. flask 실행
+
+- window : `python app.py`
+- mac : `python3 app.py`
 
 ### ERD
 
